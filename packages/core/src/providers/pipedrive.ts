@@ -1,5 +1,5 @@
 /**
- * <div style={{backgroundColor: "#000", display: "flex", justifyContent: "space-between", color: "#fff", padding: 16}}>
+ * <div class="provider" style={{backgroundColor: "#000", display: "flex", justifyContent: "space-between", color: "#fff", padding: 16}}>
  * <span>Built-in <b>Pipedrive</b> integration.</span>
  * <a href="https://www.pipedrive.com/">
  *   <img style={{display: "block"}} src="https://authjs.dev/img/providers/pipedrive.svg" height="48" />
@@ -56,13 +56,18 @@ export interface PipedriveProfile extends Record<string, any> {
  * ```
  *
  * #### Configuration
- *```js
- * import Auth from "@auth/core"
+ *```ts
+ * import { Auth } from "@auth/core"
  * import Pipedrive from "@auth/core/providers/pipedrive"
  *
  * const request = new Request(origin)
  * const response = await Auth(request, {
- *   providers: [Pipedrive({ clientId: PIPEDRIVE_CLIENT_ID, clientSecret: PIPEDRIVE_CLIENT_SECRET })],
+ *   providers: [
+ *     Pipedrive({
+ *       clientId: PIPEDRIVE_CLIENT_ID,
+ *       clientSecret: PIPEDRIVE_CLIENT_SECRET,
+ *     }),
+ *   ],
  * })
  * ```
  *
@@ -78,7 +83,7 @@ export interface PipedriveProfile extends Record<string, any> {
  * :::tip
  *
  * The Pipedrive provider comes with a [default configuration](https://github.com/nextauthjs/next-auth/blob/main/packages/core/src/providers/pipedrive.ts).
- * To override the defaults for your use case, check out [customizing a built-in OAuth provider](https://authjs.dev/guides/providers/custom-provider#override-default-options).
+ * To override the defaults for your use case, check out [customizing a built-in OAuth provider](https://authjs.dev/guides/configuring-oauth-providers).
  *
  * :::
  *

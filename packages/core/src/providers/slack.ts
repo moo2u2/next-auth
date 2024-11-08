@@ -1,5 +1,5 @@
 /**
- * <div style={{backgroundColor: "#000", display: "flex", justifyContent: "space-between", color: "#fff", padding: 16}}>
+ * <div class="provider" style={{backgroundColor: "#000", display: "flex", justifyContent: "space-between", color: "#fff", padding: 16}}>
  * <span>Built-in <b>Slack</b> integration.</span>
  * <a href="https://www.slack.com/">
  *   <img style={{display: "block"}} src="https://authjs.dev/img/providers/slack.svg" height="48" />
@@ -53,19 +53,22 @@ export interface SlackProfile extends Record<string, any> {
  * ```
  *
  * #### Configuration
- *```js
- * import Auth from "@auth/core"
+ *```ts
+ * import { Auth } from "@auth/core"
  * import Slack from "@auth/core/providers/slack"
  *
  * const request = new Request(origin)
  * const response = await Auth(request, {
- *   providers: [Slack({ clientId: SLACK_CLIENT_ID, clientSecret: SLACK_CLIENT_SECRET })],
+ *   providers: [
+ *     Slack({ clientId: SLACK_CLIENT_ID, clientSecret: SLACK_CLIENT_SECRET }),
+ *   ],
  * })
  * ```
  *
  * ### Resources
  *
- * - [Slack OAuth documentation](https://api.slack.com/authentication https://api.slack.com/docs/sign-in-with-slack)
+ * - [Slack Authentication documentation](https://api.slack.com/authentication)
+ * - [Sign-in with Slack](https://api.slack.com/docs/sign-in-with-slack)
  * - [Slack app console](https://api.slack.com/apps)
  *
  * ### Notes
@@ -83,7 +86,7 @@ export interface SlackProfile extends Record<string, any> {
  * :::tip
  *
  * The Slack provider comes with a [default configuration](https://github.com/nextauthjs/next-auth/blob/main/packages/core/src/providers/slack.ts).
- * To override the defaults for your use case, check out [customizing a built-in OAuth provider](https://authjs.dev/guides/providers/custom-provider#override-default-options).
+ * To override the defaults for your use case, check out [customizing a built-in OAuth provider](https://authjs.dev/guides/configuring-oauth-providers).
  *
  * :::
  *
@@ -105,14 +108,8 @@ export default function Slack<P extends SlackProfile>(
     name: "Slack",
     type: "oidc",
     issuer: "https://slack.com",
-    style: {
-      logo: "/slack.svg",
-      logoDark: "/slack.svg",
-      bg: "#fff",
-      text: "#000",
-      bgDark: "#000",
-      textDark: "#fff",
-    },
+    checks: ["nonce"],
+    style: { brandColor: "#611f69" },
     options,
   }
 }

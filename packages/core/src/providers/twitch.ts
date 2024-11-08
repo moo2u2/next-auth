@@ -1,5 +1,5 @@
 /**
- * <div style={{backgroundColor: "#000", display: "flex", justifyContent: "space-between", color: "#fff", padding: 16}}>
+ * <div class="provider" style={{backgroundColor: "#000", display: "flex", justifyContent: "space-between", color: "#fff", padding: 16}}>
  * <span>Built-in <b>Twitch</b> integration.</span>
  * <a href="https://www.twitch.tv/">
  *   <img style={{display: "block"}} src="https://authjs.dev/img/providers/twitch.svg" height="48" />
@@ -28,13 +28,15 @@ export interface TwitchProfile extends Record<string, any> {
  * ```
  *
  * #### Configuration
- *```js
- * import Auth from "@auth/core"
+ *```ts
+ * import { Auth } from "@auth/core"
  * import Twitch from "@auth/core/providers/twitch"
  *
  * const request = new Request(origin)
  * const response = await Auth(request, {
- *   providers: [Twitch({ clientId: TWITCH_CLIENT_ID, clientSecret: TWITCH_CLIENT_SECRET })],
+ *   providers: [
+ *     Twitch({ clientId: TWITCH_CLIENT_ID, clientSecret: TWITCH_CLIENT_SECRET }),
+ *   ],
  * })
  * ```
  *
@@ -53,7 +55,7 @@ export interface TwitchProfile extends Record<string, any> {
  * :::tip
  *
  * The Twitch provider comes with a [default configuration](https://github.com/nextauthjs/next-auth/blob/main/packages/core/src/providers/twitch.ts).
- * To override the defaults for your use case, check out [customizing a built-in OAuth provider](https://authjs.dev/guides/providers/custom-provider#override-default-options).
+ * To override the defaults for your use case, check out [customizing a built-in OAuth provider](https://authjs.dev/guides/configuring-oauth-providers).
  *
  * :::
  *
@@ -113,14 +115,7 @@ export default function Twitch(
         }
       },
     },
-    style: {
-      logo: "/twitch.svg",
-      logoDark: "/twitch-dark.svg",
-      bg: "#fff",
-      text: "#65459B",
-      bgDark: "#65459B",
-      textDark: "#fff",
-    },
+    style: { bg: "#65459B", text: "#fff" },
     options: config,
   }
 }

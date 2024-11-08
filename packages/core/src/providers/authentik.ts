@@ -1,5 +1,5 @@
 /**
- * <div style={{backgroundColor: "#fd4b2d", display: "flex", justifyContent: "space-between", color: "#fff", padding: 16}}>
+ * <div class="provider" style={{backgroundColor: "#fd4b2d", display: "flex", justifyContent: "space-between", color: "#fff", padding: 16}}>
  * <span>Built-in <b>Authentik</b> integration.</span>
  * <a href="https://goauthentik.io/">
  *   <img style={{display: "block"}} src="https://authjs.dev/img/providers/authentik.svg" height="48" width="48"/>
@@ -42,13 +42,19 @@ export interface AuthentikProfile extends Record<string, any> {
  * ```
  *
  * #### Configuration
- *```js
- * import Auth from "@auth/core"
+ *```ts
+ * import { Auth } from "@auth/core"
  * import Authentik from "@auth/core/providers/authentik"
  *
  * const request = new Request(origin)
  * const response = await Auth(request, {
- *   providers: [Authentik({ clientId: AUTHENTIK_CLIENT_ID, clientSecret: AUTHENTIK_CLIENT_SECRET, issuer: AUTHENTIK_ISSUER })],
+ *   providers: [
+ *     Authentik({
+ *       clientId: AUTHENTIK_CLIENT_ID,
+ *       clientSecret: AUTHENTIK_CLIENT_SECRET,
+ *       issuer: AUTHENTIK_ISSUER,
+ *     }),
+ *   ],
  * })
  * ```
  *
@@ -68,7 +74,7 @@ export interface AuthentikProfile extends Record<string, any> {
  * :::tip
  *
  * The Authentik provider comes with a [default configuration](https://github.com/nextauthjs/next-auth/blob/main/packages/core/src/providers/authentik.ts).
- * To override the defaults for your use case, check out [customizing a built-in OAuth provider](https://authjs.dev/guides/providers/custom-provider#override-default-options).
+ * To override the defaults for your use case, check out [customizing a built-in OAuth provider](https://authjs.dev/guides/configuring-oauth-providers).
  *
  * :::
  *

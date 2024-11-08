@@ -1,5 +1,5 @@
 /**
- * <div style={{backgroundColor: "#000", display: "flex", justifyContent: "space-between", color: "#fff", padding: 16}}>
+ * <div class="provider" style={{backgroundColor: "#000", display: "flex", justifyContent: "space-between", color: "#fff", padding: 16}}>
  * <span>Built-in <b>Battle.net</b> integration.</span>
  * <a href="https://Battle.net/">
  *   <img style={{display: "block"}} src="https://authjs.dev/img/providers/battlenet.svg" height="48" width="48"/>
@@ -17,6 +17,8 @@ export interface BattleNetProfile extends Record<string, any> {
 
 /** See the [available regions](https://develop.battle.net/documentation/guides/regionality-and-apis) */
 export type BattleNetIssuer =
+  | "https://oauth.battle.net"
+  | "https://oauth.battlenet.com.cn"
   | "https://www.battlenet.com.cn/oauth"
   | `https://${"us" | "eu" | "kr" | "tw"}.battle.net/oauth`
 
@@ -31,18 +33,26 @@ export type BattleNetIssuer =
  * ```
  *
  * #### Configuration
- *```js
- * import Auth from "@auth/core"
+ *```ts
+ * import { Auth } from "@auth/core"
  * import BattleNet from "@auth/core/providers/battlenet"
  *
  * const request = new Request(origin)
  * const response = await Auth(request, {
- *   providers: [BattleNet({ clientId: BATTLENET_CLIENT_ID, clientSecret: BATTLENET_CLIENT_SECRET. issuer: BATTLENET_ISSUER })],
+ *   providers: [
+ *     BattleNet({
+ *       clientId: BATTLENET_CLIENT_ID,
+ *       clientSecret: BATTLENET_CLIENT_SECRET,
+ *       issuer: BATTLENET_ISSUER,
+ *     }),
+ *   ],
  * })
  * ```
  * issuer must be one of these values, based on the available regions:
  * ```
  * type BattleNetIssuer =
+ *   | "https://oauth.battle.net"
+ *   | "https://oauth.battlenet.com.cn"
  *   | "https://www.battlenet.com.cn/oauth"
  *   | "https://us.battle.net/oauth"
  *   | "https://eu.battle.net/oauth"
@@ -62,7 +72,7 @@ export type BattleNetIssuer =
  * :::tip
  *
  * The BattleNet provider comes with a [default configuration](https://github.com/nextauthjs/next-auth/blob/main/packages/core/src/providers/battlenet.ts).
- * To override the defaults for your use case, check out [customizing a built-in OAuth provider](https://authjs.dev/guides/providers/custom-provider#override-default-options).
+ * To override the defaults for your use case, check out [customizing a built-in OAuth provider](https://authjs.dev/guides/configuring-oauth-providers).
  *
  * :::
  *
@@ -91,14 +101,7 @@ export default function BattleNet<P extends BattleNetProfile>(
         image: null,
       }
     },
-    style: {
-      logo: "/battlenet.svg",
-      logoDark: "/battlenet-dark.svg",
-      bg: "#fff",
-      text: "#148eff",
-      bgDark: "#148eff",
-      textDark: "#fff",
-    },
+    style: { bg: "#148eff", text: "#fff" },
     options,
   }
 }

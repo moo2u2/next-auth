@@ -1,12 +1,8 @@
-import type { Client } from "oauth4webapi"
+import type { Client, PrivateKey } from "oauth4webapi"
 import type { CommonProviderOptions } from "../providers/index.js"
-import type {
-  AuthConfig,
-  Awaitable,
-  Profile,
-  TokenSet,
-  User,
-} from "../types.js"
+import type { Awaitable, Profile, TokenSet, User } from "../types.js"
+import type { AuthConfig } from "../index.js"
+import type { conformInternal, customFetch } from "../lib/symbols.js"
 
 // TODO: fix types
 type AuthorizationParameters = any
@@ -50,6 +46,7 @@ interface AdvancedEndpointHandler<P extends UrlParams, C, R> {
   request?: EndpointRequest<C, R, P>
   /** @internal */
   conform?: (response: Response) => Awaitable<Response | undefined>
+  clientPrivateKey?: CryptoKey | PrivateKey
 }
 
 /**
@@ -59,7 +56,7 @@ interface AdvancedEndpointHandler<P extends UrlParams, C, R> {
 export type EndpointHandler<
   P extends UrlParams,
   C = any,
-  R = any
+  R = any,
 > = AdvancedEndpointHandler<P, C, R>
 
 export type AuthorizationEndpointHandler =
@@ -98,12 +95,16 @@ export type ProfileCallback<Profile> = (
 export type AccountCallback = (tokens: TokenSet) => TokenSet | undefined | void
 
 export interface OAuthProviderButtonStyles {
-  logo: string
-  logoDark: string
-  bg: string
-  bgDark: string
-  text: string
-  textDark: string
+  logo?: string
+  /**
+   * @deprecated
+   */
+  text?: string
+  /**
+   * @deprecated Please use 'brandColor' instead
+   */
+  bg?: string
+  brandColor?: string
 }
 
 /** TODO: Document */
@@ -148,7 +149,7 @@ export interface OAuth2Config<Profile>
    *
    * Defaults to: `id`, `email`, `name`, `image`
    *
-   * @see [Database Adapter: User model](https://authjs.dev/reference/adapters#user)
+   * @see [Database Adapter: User model](https://authjs.dev/reference/core/adapters#user)
    */
   profile?: ProfileCallback<Profile>
   /**
@@ -156,8 +157,8 @@ export interface OAuth2Config<Profile>
    * It is used to create the account associated with a user in the database.
    *
    * :::note
-   * You need to adjust your database's [Account model](https://authjs.dev/reference/adapters#account) to match the returned properties.
-   * Check out the documentation of your [database adapter](https://authjs.dev/reference/adapters) for more information.
+   * You need to adjust your database's [Account model](https://authjs.dev/reference/core/adapters#account) to match the returned properties.
+   * Check out the documentation of your [database adapter](https://authjs.dev/reference/core/adapters) for more information.
    * :::
    *
    * Defaults to: `access_token`, `id_token`, `refresh_token`, `expires_at`, `scope`, `token_type`, `session_state`
@@ -181,7 +182,7 @@ export interface OAuth2Config<Profile>
    * })
    * ```
    *
-   * @see [Database Adapter: Account model](https://authjs.dev/reference/adapters#account)
+   * @see [Database Adapter: Account model](https://authjs.dev/reference/core/adapters#account)
    * @see https://openid.net/specs/openid-connect-core-1_0.html#TokenResponse
    * @see https://www.ietf.org/rfc/rfc6749.html#section-5.1
    */
@@ -204,7 +205,7 @@ export interface OAuth2Config<Profile>
    * Pass overrides to the underlying OAuth library.
    * See [`oauth4webapi` client](https://github.com/panva/oauth4webapi/blob/main/docs/interfaces/Client.md) for details.
    */
-  client?: Partial<Client>
+  client?: Partial<Client & { token_endpoint_auth_method: string }>
   style?: OAuthProviderButtonStyles
   /**
    * Normally, when you sign in with an OAuth provider and another account
@@ -213,7 +214,7 @@ export interface OAuth2Config<Profile>
    *
    * Automatic account linking on sign in is not secure
    * between arbitrary providers and is disabled by default.
-   * Learn more in our [Security FAQ](https://authjs.dev/reference/faq#security).
+   * Learn more in our [Security FAQ](https://authjs.dev/concepts#security).
    *
    * However, it may be desirable to allow automatic account linking if you trust that the provider involved has securely verified the email address
    * associated with the account. Set `allowDangerousEmailAccountLinking: true`
@@ -221,6 +222,8 @@ export interface OAuth2Config<Profile>
    */
   allowDangerousEmailAccountLinking?: boolean
   redirectProxyUrl?: AuthConfig["redirectProxyUrl"]
+  /** @see {customFetch} */
+  [customFetch]?: typeof fetch
   /**
    * The options provided by the user.
    * We will perform a deep-merge of these values
@@ -228,6 +231,8 @@ export interface OAuth2Config<Profile>
    *
    * @internal
    */
+  /** @see {conformInternal} */
+  [conformInternal]?: true
   options?: OAuthUserConfig<Profile>
 }
 
@@ -239,7 +244,12 @@ export interface OAuth2Config<Profile>
 export interface OIDCConfig<Profile>
   extends Omit<OAuth2Config<Profile>, "type" | "checks"> {
   type: "oidc"
-  checks?: OAuth2Config<Profile>["checks"] & Array<"nonce">
+  checks?: Array<NonNullable<OAuth2Config<Profile>["checks"]>[number] | "nonce">
+  /**
+   * If set to `false`, the `userinfo_endpoint` will be fetched for the user data.
+   * @note An `id_token` is still required to be returned during the authorization flow.
+   */
+  idToken?: boolean
 }
 
 export type OAuthConfig<Profile> = OIDCConfig<Profile> | OAuth2Config<Profile>
@@ -259,7 +269,11 @@ export type OAuthConfigInternal<Profile> = Omit<
   token?: {
     url: URL
     request?: TokenEndpointHandler["request"]
-    /** @internal */
+    clientPrivateKey?: CryptoKey | PrivateKey
+    /**
+     * @internal
+     * @deprecated
+     */
     conform?: TokenEndpointHandler["conform"]
   }
   userinfo?: { url: URL; request?: UserinfoEndpointHandler["request"] }
@@ -282,6 +296,7 @@ export type OAuthConfigInternal<Profile> = Omit<
 
 export type OIDCConfigInternal<Profile> = OAuthConfigInternal<Profile> & {
   checks: OIDCConfig<Profile>["checks"]
+  idToken: OIDCConfig<Profile>["idToken"]
 }
 
 export type OAuthUserConfig<Profile> = Omit<

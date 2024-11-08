@@ -1,5 +1,5 @@
 /**
- * <div style={{backgroundColor: "#000", display: "flex", justifyContent: "space-between", color: "#fff", padding: 16}}>
+ * <div class="provider" style={{backgroundColor: "#000", display: "flex", justifyContent: "space-between", color: "#fff", padding: 16}}>
  * <span>Built-in <b>LINE</b> integration.</span>
  * <a href="https://LINE.com">
  *   <img style={{display: "block"}} src="https://authjs.dev/img/providers/line.svg" height="48" width="48"/>
@@ -33,13 +33,15 @@ export interface LineProfile extends Record<string, any> {
  * ```
  *
  * #### Configuration
- *```js
- * import Auth from "@auth/core"
+ *```ts
+ * import { Auth } from "@auth/core"
  * import LINE from "@auth/core/providers/line"
  *
  * const request = new Request(origin)
  * const response = await Auth(request, {
- *   providers: [LINE({ clientId: LINE_CLIENT_ID, clientSecret: LINE_CLIENT_SECRET })],
+ *   providers: [
+ *     LINE({ clientId: LINE_CLIENT_ID, clientSecret: LINE_CLIENT_SECRET }),
+ *   ],
  * })
  * ```
  *
@@ -65,7 +67,7 @@ export interface LineProfile extends Record<string, any> {
  * :::tip
  *
  * The LINE provider comes with a [default configuration](https://github.com/nextauthjs/next-auth/blob/main/packages/core/src/providers/line.ts).
- * To override the defaults for your use case, check out [customizing a built-in OAuth provider](https://authjs.dev/guides/providers/custom-provider#override-default-options).
+ * To override the defaults for your use case, check out [customizing a built-in OAuth provider](https://authjs.dev/guides/configuring-oauth-providers).
  *
  * :::
  *
@@ -90,14 +92,7 @@ export default function LINE<P extends LineProfile>(
     client: {
       id_token_signed_response_alg: "HS256",
     },
-    style: {
-      logo: "/line.svg",
-      logoDark: "/line.svg",
-      bg: "#fff",
-      text: "#00C300",
-      bgDark: "#00C300",
-      textDark: "#fff",
-    },
+    style: { bg: "#00C300", text: "#fff" },
     options,
   }
 }

@@ -1,5 +1,5 @@
 /**
- * <div style={{backgroundColor: "#000", display: "flex", justifyContent: "space-between", color: "#fff", padding: 16}}>
+ * <div class="provider" style={{backgroundColor: "#000", display: "flex", justifyContent: "space-between", color: "#fff", padding: 16}}>
  * <span>Built-in <b>FreshBooks</b> integration.</span>
  * <a href="https://freshbooks.com">
  *   <img style={{display: "block"}} src="https://authjs.dev/img/providers/freshbooks.svg" height="48" width="48"/>
@@ -21,13 +21,18 @@ import type { OAuthConfig, OAuthUserConfig } from "./index.js"
  * ```
  *
  * #### Configuration
- *```js
- * import Auth from "@auth/core"
+ *```ts
+ * import { Auth } from "@auth/core"
  * import FreshBooks from "@auth/core/providers/freshbooks"
  *
  * const request = new Request(origin)
  * const response = await Auth(request, {
- *   providers: [FreshBooks({ clientId: FRESHBOOKS_CLIENT_ID, clientSecret: FRESHBOOKS_CLIENT_SECRET })],
+ *   providers: [
+ *     FreshBooks({
+ *       clientId: FRESHBOOKS_CLIENT_ID,
+ *       clientSecret: FRESHBOOKS_CLIENT_SECRET,
+ *     }),
+ *   ],
  * })
  * ```
  *
@@ -44,7 +49,7 @@ import type { OAuthConfig, OAuthUserConfig } from "./index.js"
  * :::tip
  *
  * The FreshBooks provider comes with a [default configuration](https://github.com/nextauthjs/next-auth/blob/main/packages/core/src/providers/freshbooks.ts).
- * To override the defaults for your use case, check out [customizing a built-in OAuth provider](https://authjs.dev/guides/providers/custom-provider#override-default-options).
+ * To override the defaults for your use case, check out [customizing a built-in OAuth provider](https://authjs.dev/guides/configuring-oauth-providers).
  *
  * :::
  *
@@ -77,12 +82,8 @@ export default function Freshbooks(
       }
     },
     style: {
-      logo: "/freshbooks.svg",
-      logoDark: "/freshbooks-dark.svg",
-      bg: "#fff",
-      text: "#0075dd",
-      bgDark: "#0075dd",
-      textDark: "#fff",
+      bg: "#0075dd",
+      text: "#fff",
     },
     options,
   }

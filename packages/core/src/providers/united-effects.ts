@@ -1,5 +1,5 @@
 /**
- * <div style={{backgroundColor: "#000", display: "flex", justifyContent: "space-between", color: "#fff", padding: 16}}>
+ * <div class="provider" style={{backgroundColor: "#000", display: "flex", justifyContent: "space-between", color: "#fff", padding: 16}}>
  * <span>Built-in <b>United Effects</b> integration.</span>
  * <a href="https://www.unitedeffects.com/">
  *   <img style={{display: "block"}} src="https://authjs.dev/img/providers/united-effects.svg" height="48" />
@@ -24,13 +24,15 @@ export interface UnitedEffectsProfile extends Record<string, any> {
  * ```
  *
  * #### Configuration
- *```js
- * import Auth from "@auth/core"
+ *```ts
+ * import { Auth } from "@auth/core"
  * import UnitedEffects from "@auth/core/providers/united-effects"
  *
  * const request = new Request(origin)
  * const response = await Auth(request, {
- *   providers: [UnitedEffects({ clientId: UE_CLIENT_ID, clientSecret: UE_CLIENT_SECRET })],
+ *   providers: [
+ *     UnitedEffects({ clientId: UE_CLIENT_ID, clientSecret: UE_CLIENT_SECRET }),
+ *   ],
  * })
  * ```
  *
@@ -58,7 +60,7 @@ export interface UnitedEffectsProfile extends Record<string, any> {
  * :::tip
  *
  * The UnitedEffects provider comes with a [default configuration](https://github.com/nextauthjs/next-auth/blob/main/packages/core/src/providers/united-effects.ts).
- * To override the defaults for your use case, check out [customizing a built-in OAuth provider](https://authjs.dev/guides/providers/custom-provider#override-default-options).
+ * To override the defaults for your use case, check out [customizing a built-in OAuth provider](https://authjs.dev/guides/configuring-oauth-providers).
  *
  * :::
  *

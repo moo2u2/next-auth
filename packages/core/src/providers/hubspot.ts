@@ -1,5 +1,5 @@
 /**
- * <div style={{backgroundColor: "#000", display: "flex", justifyContent: "space-between", color: "#fff", padding: 16}}>
+ * <div class="provider" style={{backgroundColor: "#000", display: "flex", justifyContent: "space-between", color: "#fff", padding: 16}}>
  * <span>Built-in <b>HubSpot</b> integration.</span>
  * <a href="https://hubspot.com">
  *   <img style={{display: "block"}} src="https://authjs.dev/img/providers/hubspot.svg" height="48" width="48"/>
@@ -29,13 +29,18 @@ interface HubSpotProfile extends Record<string, any> {
  * ```
  *
  * #### Configuration
- *```js
- * import Auth from "@auth/core"
+ *```ts
+ * import { Auth } from "@auth/core"
  * import HubSpot from "@auth/core/providers/hubspot"
  *
  * const request = new Request(origin)
  * const response = await Auth(request, {
- *   providers: [HubSpot({ clientId: HUBSPOT_CLIENT_ID, clientSecret: HUBSPOT_CLIENT_SECRET })],
+ *   providers: [
+ *     HubSpot({
+ *       clientId: HUBSPOT_CLIENT_ID,
+ *       clientSecret: HUBSPOT_CLIENT_SECRET,
+ *     }),
+ *   ],
  * })
  * ```
  *
@@ -55,7 +60,7 @@ interface HubSpotProfile extends Record<string, any> {
  * :::tip
  *
  * The HubSpot provider comes with a [default configuration](https://github.com/nextauthjs/next-auth/blob/main/packages/core/src/providers/hubspot.ts).
- * To override the defaults for your use case, check out [customizing a built-in OAuth provider](https://authjs.dev/guides/providers/custom-provider#override-default-options).
+ * To override the defaults for your use case, check out [customizing a built-in OAuth provider](https://authjs.dev/guides/configuring-oauth-providers).
  *
  * :::
  *
@@ -106,14 +111,7 @@ export default function HubSpot<P extends HubSpotProfile>(
         image: null,
       }
     },
-    style: {
-      logo: "/hubspot.svg",
-      logoDark: "/hubspot-dark.svg",
-      bg: "#fff",
-      text: "#ff7a59",
-      bgDark: "#ff7a59",
-      textDark: "#fff",
-    },
+    style: { bg: "#ff7a59", text: "#fff" },
     options,
   }
 }

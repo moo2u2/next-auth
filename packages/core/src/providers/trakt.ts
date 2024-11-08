@@ -1,5 +1,5 @@
 /**
- * <div style={{backgroundColor: "#000", display: "flex", justifyContent: "space-between", color: "#fff", padding: 16}}>
+ * <div class="provider" style={{backgroundColor: "#000", display: "flex", justifyContent: "space-between", color: "#fff", padding: 16}}>
  * <span>Built-in <b>Trakt</b> integration.</span>
  * <a href="https://www.trakt.tv/">
  *   <img style={{display: "block"}} src="https://authjs.dev/img/providers/trakt.svg" height="48" />
@@ -36,13 +36,15 @@ export interface TraktUser extends Record<string, any> {
  * ```
  *
  * #### Configuration
- *```js
- * import Auth from "@auth/core"
+ *```ts
+ * import { Auth } from "@auth/core"
  * import Trakt from "@auth/core/providers/trakt"
  *
  * const request = new Request(origin)
  * const response = await Auth(request, {
- *   providers: [Trakt({ clientId: TRAKT_CLIENT_ID, clientSecret: TRAKT_CLIENT_SECRET })],
+ *   providers: [
+ *     Trakt({ clientId: TRAKT_CLIENT_ID, clientSecret: TRAKT_CLIENT_SECRET }),
+ *   ],
  * })
  * ```
  *
@@ -69,7 +71,7 @@ export interface TraktUser extends Record<string, any> {
  * :::tip
  *
  * The Trakt provider comes with a [default configuration](https://github.com/nextauthjs/next-auth/blob/main/packages/core/src/providers/trakt.ts).
- * To override the defaults for your use case, check out [customizing a built-in OAuth provider](https://authjs.dev/guides/providers/custom-provider#override-default-options).
+ * To override the defaults for your use case, check out [customizing a built-in OAuth provider](https://authjs.dev/guides/configuring-oauth-providers).
  *
  * :::
  *
@@ -112,14 +114,7 @@ export default function Trakt<P extends TraktUser>(
         image: profile.images.avatar.full, // trakt does not allow hotlinking
       }
     },
-    style: {
-      logo: "/trakt.svg",
-      logoDark: "/trakt-dark.svg",
-      bg: "#fff",
-      text: "#ED2224",
-      bgDark: "#ED2224",
-      textDark: "#fff",
-    },
+    style: { bg: "#ED2224", text: "#fff" },
     options,
   }
 }

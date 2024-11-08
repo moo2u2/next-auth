@@ -44,23 +44,41 @@ export interface AtlassianProfile extends Record<string, any> {
  *
  * Import the provider and configure it in your **Auth.js** initialization file:
  *
- * ```ts title="pages/api/auth/[...nextauth].ts"
- * import NextAuth from "next-auth"
- * import AtlassianProvider from "next-auth/providers/atlassian"
+ * ```ts
+ * import Atlassian from "@auth/core/providers/atlassian"
+ * ...
+ * providers: [
+ *  Atlassian({
+ *    clientId: env.AUTH_ATLASSIAN_ID,
+ *    clientSecret: env.AUTH_ATLASSIAN_SECRET,
+ *  }),
+ * ]
+ * ...
+ * ```
  *
- * export default NextAuth({
- *   providers: [
- *     AtlassianProvider({
- *       clientId: process.env.ATLASSIAN_ID,
- *       clientSecret: process.env.ATLASSIAN_SECRET,
- *     }),
- *   ],
- * })
+ * ### Configuring Atlassian
+ *
+ * Follow these steps:
+ *
+ * 1. From any page on [developer.atlassian.com](https://developer.atlassian.com), select your profile icon in the top-right corner, and from the dropdown, select **Developer console**.
+ * 2. Select your app from the list (or create one if you don't already have one)
+ * 3. Select **Authorization** in the left menu
+ * 4. Next to OAuth 2.0 (3LO), select **Configure** (or **Add** for newly created app)
+ * 5. Enter the **Callback URL**: `https://{YOUR_DOMAIN}/api/auth/callback/atlassian`
+ * 6. Click Save changes
+ * 7. Select **Settings** in the left menu
+ * 8. Access and copy your app's **Client ID** and **Secret**
+ *
+ * Then, create a `.env` file in the project root add the following entries:
+ *
+ * ```
+ * AUTH_ATLASSIAN_ID=<Client ID copied in step 8>
+ * AUTH_ATLASSIAN_SECRET=<Secret copied in step 8>
  * ```
  *
  * ### Resources
  *
- * - [Atlassian docs](https://developer.atlassian.com/server/jira/platform/oauth/)
+ * - [Atlassian docs](https://developer.atlassian.com/cloud/jira/software/oauth-2-3lo-apps/)
  *
  * ### Notes
  *
@@ -74,19 +92,16 @@ export interface AtlassianProfile extends Record<string, any> {
  * the spec by the provider. You can open an issue, but if the problem is non-compliance with the spec,
  * we might not pursue a resolution. You can ask for more help in [Discussions](https://authjs.dev/new/github-discussions).
  */
-export default function Atlassian<P extends AtlassianProfile>(
-  options: OAuthUserConfig<P>
-): OAuthConfig<P> {
+export default function Atlassian(
+  options: OAuthUserConfig<AtlassianProfile>
+): OAuthConfig<AtlassianProfile> {
   return {
     id: "atlassian",
     name: "Atlassian",
     type: "oauth",
     authorization: {
       url: "https://auth.atlassian.com/authorize",
-      params: {
-        audience: "api.atlassian.com",
-        prompt: "consent",
-      },
+      params: { audience: "api.atlassian.com", scope: "read:me" },
     },
     token: "https://auth.atlassian.com/oauth/token",
     userinfo: "https://api.atlassian.com/me",
@@ -98,14 +113,8 @@ export default function Atlassian<P extends AtlassianProfile>(
         image: profile.picture,
       }
     },
-    style: {
-      logo: "/atlassian.svg",
-      logoDark: "/atlassian-dark.svg",
-      bg: "#0052cc",
-      text: "#fff",
-      bgDark: "#fff",
-      textDark: "#0052cc",
-    },
+    checks: ["state"],
+    style: { bg: "#fff", text: "#0052cc" },
     options,
   }
 }

@@ -1,5 +1,5 @@
 /**
- * <div style={{backgroundColor: "#000", display: "flex", justifyContent: "space-between", color: "#fff", padding: 16}}>
+ * <div class="provider" style={{backgroundColor: "#000", display: "flex", justifyContent: "space-between", color: "#fff", padding: 16}}>
  * <span>Built-in <b>Mailchimp</b> integration.</span>
  * <a href="https://mailchimp.com">
  *   <img style={{display: "block"}} src="https://authjs.dev/img/providers/mailchimp.svg" height="48" width="48"/>
@@ -21,13 +21,18 @@ import type { OAuthConfig, OAuthUserConfig } from "./index.js"
  * ```
  *
  * #### Configuration
- *```js
- * import Auth from "@auth/core"
+ *```ts
+ * import { Auth } from "@auth/core"
  * import Mailchimp from "@auth/core/providers/mailchimp"
  *
  * const request = new Request(origin)
  * const response = await Auth(request, {
- *   providers: [Mailchimp({ clientId: MAILCHIMP_CLIENT_ID, clientSecret: MAILCHIMP_CLIENT_SECRET })],
+ *   providers: [
+ *     Mailchimp({
+ *       clientId: MAILCHIMP_CLIENT_ID,
+ *       clientSecret: MAILCHIMP_CLIENT_SECRET,
+ *     }),
+ *   ],
  * })
  * ```
  *
@@ -44,7 +49,7 @@ import type { OAuthConfig, OAuthUserConfig } from "./index.js"
  * :::tip
  *
  * The Mailchimp provider comes with a [default configuration](https://github.com/nextauthjs/next-auth/blob/main/packages/core/src/providers/mailchimp.ts).
- * To override the defaults for your use case, check out [customizing a built-in OAuth provider](https://authjs.dev/guides/providers/custom-provider#override-default-options).
+ * To override the defaults for your use case, check out [customizing a built-in OAuth provider](https://authjs.dev/guides/configuring-oauth-providers).
  *
  * :::
  *
@@ -77,12 +82,8 @@ export default function Mailchimp(
       }
     },
     style: {
-      logo: "/mailchimp.svg",
-      logoDark: "/mailchimp-dark.svg",
-      bg: "#fff",
-      text: "#000",
-      bgDark: "#000",
-      textDark: "#fff",
+      bg: "#000",
+      text: "#fff",
     },
     options: config,
   }

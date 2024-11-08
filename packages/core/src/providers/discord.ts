@@ -1,5 +1,5 @@
 /**
- * <div style={{backgroundColor: "#000", display: "flex", justifyContent: "space-between", color: "#fff", padding: 16}}>
+ * <div class="provider" style={{backgroundColor: "#000", display: "flex", justifyContent: "space-between", color: "#fff", padding: 16}}>
  * <span>Built-in <b>Discord</b> integration.</span>
  * <a href="https://discord.com/">
  *   <img style={{display: "block"}} src="https://authjs.dev/img/providers/discord.svg" height="48" width="48"/>
@@ -19,8 +19,10 @@ export interface DiscordProfile extends Record<string, any> {
   id: string
   /** the user's username, not unique across the platform */
   username: string
-  /** the user's 4-digit discord-tag */
+  /** the user's Discord-tag */
   discriminator: string
+  /** the user's display name, if it is set  */
+  global_name: string | null
   /**
    * the user's avatar hash:
    * https://discord.com/developers/docs/reference#image-formatting
@@ -95,13 +97,18 @@ export interface DiscordProfile extends Record<string, any> {
  * ```
  *
  * #### Configuration
- *```js
- * import Auth from "@auth/core"
+ *```ts
+ * import { Auth } from "@auth/core"
  * import Discord from "@auth/core/providers/discord"
  *
  * const request = new Request(origin)
  * const response = await Auth(request, {
- *   providers: [Discord({ clientId: DISCORD_CLIENT_ID, clientSecret: DISCORD_CLIENT_SECRET })],
+ *   providers: [
+ *     Discord({
+ *       clientId: DISCORD_CLIENT_ID,
+ *       clientSecret: DISCORD_CLIENT_SECRET,
+ *     }),
+ *   ],
  * })
  * ```
  *
@@ -118,7 +125,7 @@ export interface DiscordProfile extends Record<string, any> {
  * :::tip
  *
  * The Discord provider comes with a [default configuration](https://github.com/nextauthjs/next-auth/blob/main/packages/core/src/providers/discord.ts).
- * To override the defaults for your use case, check out [customizing a built-in OAuth provider](https://authjs.dev/guides/providers/custom-provider#override-default-options).
+ * To override the defaults for your use case, check out [customizing a built-in OAuth provider](https://authjs.dev/guides/configuring-oauth-providers).
  *
  * :::
  *
@@ -139,13 +146,18 @@ export default function Discord<P extends DiscordProfile>(
     id: "discord",
     name: "Discord",
     type: "oauth",
-    authorization:
-      "https://discord.com/api/oauth2/authorize?scope=identify+email",
+    authorization: {
+      url: "https://discord.com/api/oauth2/authorize",
+      params: { scope: "identify email" },
+    },
     token: "https://discord.com/api/oauth2/token",
     userinfo: "https://discord.com/api/users/@me",
     profile(profile) {
       if (profile.avatar === null) {
-        const defaultAvatarNumber = parseInt(profile.discriminator) % 5
+        const defaultAvatarNumber =
+          profile.discriminator === "0"
+            ? Number(BigInt(profile.id) >> BigInt(22)) % 6
+            : parseInt(profile.discriminator) % 5
         profile.image_url = `https://cdn.discordapp.com/embed/avatars/${defaultAvatarNumber}.png`
       } else {
         const format = profile.avatar.startsWith("a_") ? "gif" : "png"
@@ -153,19 +165,12 @@ export default function Discord<P extends DiscordProfile>(
       }
       return {
         id: profile.id,
-        name: profile.username,
+        name: profile.global_name ?? profile.username,
         email: profile.email,
         image: profile.image_url,
       }
     },
-    style: {
-      logo: "/discord.svg",
-      logoDark: "/discord-dark.svg",
-      bg: "#fff",
-      text: "#7289DA",
-      bgDark: "#7289DA",
-      textDark: "#fff",
-    },
+    style: { bg: "#5865F2", text: "#fff" },
     options,
   }
 }

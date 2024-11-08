@@ -1,6 +1,6 @@
 {
   "name": "@auth/prisma-adapter",
-  "version": "1.0.2",
+  "version": "2.7.3",
   "description": "Prisma adapter for Auth.js",
   "homepage": "https://authjs.dev/reference/adapter/prisma",
   "repository": "https://github.com/nextauthjs/next-auth",
@@ -21,7 +21,8 @@
   "exports": {
     ".": {
       "types": "./index.d.ts",
-      "import": "./index.js"
+      "import": "./index.js",
+      "default": "./index.js"
     }
   },
   "license": "ISC",
@@ -36,13 +37,14 @@
     "access": "public"
   },
   "scripts": {
-    "clean": "rm ./prisma/dev.db* || echo 'File deleted'",
+    "clean": "rm ./prisma/dev.db* || echo 'File deleted' && rm -rf *.js *.d.ts*",
     "init:default": "prisma migrate dev --name init --skip-seed",
     "init:custom": "prisma migrate dev --name init-custom --schema ./prisma/custom.prisma",
-    "test:default": "pnpm init:default && jest",
-    "test:custom": "pnpm init:custom && CUSTOM_MODEL=1 jest",
-    "test:mongodb": "./tests/mongodb.test.sh",
-    "test": "pnpm test:default && pnpm test:custom && pnpm test:mongodb",
+    "test:default": "pnpm init:default && vitest run -c ../utils/vitest.config.ts",
+    "test:custom": "pnpm init:custom && CUSTOM_MODEL=1 vitest run -c ../utils/vitest.config.ts",
+    "test:mongodb": "./test/mongodb.test.sh",
+    "test": "pnpm test:default && pnpm test:custom",
+    "test:og": "pnpm test:default && pnpm test:custom && pnpm test:mongodb",
     "build": "prisma generate && tsc",
     "dev": "prisma generate && tsc -w",
     "studio": "prisma studio"
@@ -54,14 +56,9 @@
     "@prisma/client": ">=2.26.0 || >=3 || >=4 || >=5"
   },
   "devDependencies": {
-    "@auth/adapter-test": "workspace:*",
-    "@auth/tsconfig": "workspace:*",
-    "@prisma/client": "^5.2.0",
-    "jest": "^27.4.3",
-    "mongodb": "^4.17.0",
-    "prisma": "^5.2.0"
-  },
-  "jest": {
-    "preset": "@auth/adapter-test/jest"
+    "@prisma/client": "^5.20.0",
+    "@prisma/extension-accelerate": "1.1.0",
+    "mongodb": "^6.9.0",
+    "prisma": "^5.20.0"
   }
 }

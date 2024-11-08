@@ -1,5 +1,5 @@
 /**
- * <div style={{backgroundColor: "#000", display: "flex", justifyContent: "space-between", color: "#fff", padding: 16}}>
+ * <div class="provider" style={{backgroundColor: "#000", display: "flex", justifyContent: "space-between", color: "#fff", padding: 16}}>
  * <span>Built-in <b>Pinterest</b> integration.</span>
  * <a href="https://www.pinterest.com/">
  *   <img style={{display: "block"}} src="https://authjs.dev/img/providers/pinterest.svg" height="48" />
@@ -28,13 +28,18 @@ export interface PinterestProfile extends Record<string, any> {
  * ```
  *
  * #### Configuration
- *```js
- * import Auth from "@auth/core"
+ *```ts
+ * import { Auth } from "@auth/core"
  * import Pinterest from "@auth/core/providers/pinterest"
  *
  * const request = new Request(origin)
  * const response = await Auth(request, {
- *   providers: [Pinterest({ clientId: PINTEREST_CLIENT_ID, clientSecret: PINTEREST_CLIENT_SECRET })],
+ *   providers: [
+ *     Pinterest({
+ *       clientId: PINTEREST_CLIENT_ID,
+ *       clientSecret: PINTEREST_CLIENT_SECRET,
+ *     }),
+ *   ],
  * })
  * ```
  *
@@ -58,7 +63,7 @@ export interface PinterestProfile extends Record<string, any> {
  * :::tip
  *
  * The Pinterest provider comes with a [default configuration](https://github.com/nextauthjs/next-auth/blob/main/packages/core/src/providers/pinterest.ts).
- * To override the defaults for your use case, check out [customizing a built-in OAuth provider](https://authjs.dev/guides/providers/custom-provider#override-default-options).
+ * To override the defaults for your use case, check out [customizing a built-in OAuth provider](https://authjs.dev/guides/configuring-oauth-providers).
  *
  * :::
  *
@@ -92,6 +97,9 @@ export default function PinterestProvider<P extends PinterestProfile>(
         image: profile_image,
         email: null,
       }
+    },
+    style: {
+      brandColor: "#bd081c",
     },
     options,
   }

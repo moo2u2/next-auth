@@ -1,5 +1,5 @@
 /**
- * <div style={{backgroundColor: "#000", display: "flex", justifyContent: "space-between", color: "#fff", padding: 16}}>
+ * <div class="provider" style={{backgroundColor: "#000", display: "flex", justifyContent: "space-between", color: "#fff", padding: 16}}>
  * <span>Built-in <b>Todoist</b> integration.</span>
  * <a href="https://www.todoist.com/">
  *   <img style={{display: "block"}} src="https://authjs.dev/img/providers/todoist.svg" height="48" />
@@ -31,13 +31,18 @@ interface TodoistProfile extends Record<string, any> {
  * ```
  *
  * #### Configuration
- *```js
- * import Auth from "@auth/core"
+ *```ts
+ * import { Auth } from "@auth/core"
  * import Todoist from "@auth/core/providers/todoist"
  *
  * const request = new Request(origin)
  * const response = await Auth(request, {
- *   providers: [Todoist({ clientId: TODOIST_CLIENT_ID, clientSecret: TODOIST_CLIENT_SECRET })],
+ *   providers: [
+ *     Todoist({
+ *       clientId: TODOIST_CLIENT_ID,
+ *       clientSecret: TODOIST_CLIENT_SECRET,
+ *     }),
+ *   ],
  * })
  * ```
  *
@@ -54,7 +59,7 @@ interface TodoistProfile extends Record<string, any> {
  * :::tip
  *
  * The Todoist provider comes with a [default configuration](https://github.com/nextauthjs/next-auth/blob/main/packages/core/src/providers/todoist.ts).
- * To override the defaults for your use case, check out [customizing a built-in OAuth provider](https://authjs.dev/guides/providers/custom-provider#override-default-options).
+ * To override the defaults for your use case, check out [customizing a built-in OAuth provider](https://authjs.dev/guides/configuring-oauth-providers).
  *
  * :::
  *
@@ -111,14 +116,7 @@ export default function TodoistProvider<P extends TodoistProfile>(
         image: profile.avatar_big,
       }
     },
-    style: {
-      logo: "/todoist.svg",
-      logoDark: "/todoist.svg",
-      bg: "#fff",
-      text: "#E44332",
-      bgDark: "#000",
-      textDark: "#E44332",
-    },
+    style: { text: "#000", bg: "#E44332" },
     options,
   }
 }

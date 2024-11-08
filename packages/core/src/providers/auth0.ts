@@ -1,10 +1,10 @@
 /**
- * <div style={{display: "flex", justifyContent: "space-between", alignItems: "center"}}>
+ * <div class="provider" style={{display: "flex", justifyContent: "space-between", alignItems: "center"}}>
  * <span style={{fontSize: "1.35rem" }}>
  *  Built-in sign in with <b>Auth0</b> integration.
  * </span>
  * <a href="https://auth0.com" style={{backgroundColor: "black", padding: "12px", borderRadius: "100%" }}>
- *   <img style={{display: "block"}} src="https://authjs.dev/img/providers/auth0-dark.svg" width="24"/>
+ *   <img style={{display: "block"}} src="https://authjs.dev/img/providers/auth0.svg" width="24"/>
  * </a>
  * </div>
  *
@@ -83,18 +83,16 @@ export interface Auth0Profile extends Record<string, any> {
  * ```
  *
  * #### Configuration
+ * ```ts
+ * import { Auth } from "@auth/core"
+ * import Auth0 from "@auth/core/providers/auth0"
  *
- * Import the provider and configure it in your **Auth.js** initialization file:
- *
- * ```ts title="pages/api/auth/[...nextauth].ts"
- * import NextAuth from "next-auth"
- * import Auth0Provider from "next-auth/providers/auth0"
- *
- * export default NextAuth({
+ * const request = new Request(origin)
+ * const response = await Auth(request, {
  *   providers: [
- *     Auth0Provider({
- *       clientId: process.env.AUTH0_ID,
- *       clientSecret: process.env.AUTH0_SECRET,
+ *     Auth0({
+ *       clientId: AUTH0_ID,
+ *       clientSecret: AUTH0_SECRET,
  *     }),
  *   ],
  * })
@@ -106,7 +104,7 @@ export interface Auth0Profile extends Record<string, any> {
  *
  * ### Notes
  *
- * The Auth0 provider comes with a [default configuration](https://github.com/nextauthjs/next-auth/blob/main/packages/core/src/providers/auth0.ts). To override the defaults for your use case, check out [customizing a built-in OAuth provider](https://authjs.dev/guides/providers/custom-provider#override-default-options).
+ * The Auth0 provider comes with a [default configuration](https://github.com/nextauthjs/next-auth/blob/main/packages/core/src/providers/auth0.ts). To override the defaults for your use case, check out [customizing a built-in OAuth provider](https://authjs.dev/guides/configuring-oauth-providers).
  *
  * ## Help
  *
@@ -123,14 +121,7 @@ export default function Auth0(
     id: "auth0",
     name: "Auth0",
     type: "oidc",
-    style: {
-      logo: "/auth0.svg",
-      logoDark: "/auth0-dark.svg",
-      bg: "#fff",
-      text: "#EB5424",
-      bgDark: "#EB5424",
-      textDark: "#fff",
-    },
+    style: { text: "#fff", bg: "#EB5424" },
     options: config,
   }
 }

@@ -1,5 +1,5 @@
 /**
- * <div style={{backgroundColor: "#000", display: "flex", justifyContent: "space-between", color: "#fff", padding: 16}}>
+ * <div class="provider" style={{backgroundColor: "#000", display: "flex", justifyContent: "space-between", color: "#fff", padding: 16}}>
  * <span>Built-in <b>Cognito</b> integration.</span>
  * <a href="https://docs.aws.amazon.com/cognito">
  *   <img style={{display: "block"}} src="https://authjs.dev/img/providers/cognito.svg" height="48" width="48"/>
@@ -28,13 +28,19 @@ export interface CognitoProfile extends Record<string, any> {
  * ```
  *
  * #### Configuration
- *```js
- * import Auth from "@auth/core"
+ *```ts
+ * import { Auth } from "@auth/core"
  * import Cognito from "@auth/core/providers/cognito"
  *
  * const request = new Request(origin)
  * const response = await Auth(request, {
- *   providers: [Cognito({ clientId: COGNITO_CLIENT_ID, clientSecret: COGNITO_CLIENT_SECRET, issuer: COGNITO_ISSUER })],
+ *   providers: [
+ *     Cognito({
+ *       clientId: COGNITO_CLIENT_ID,
+ *       clientSecret: COGNITO_CLIENT_SECRET,
+ *       issuer: COGNITO_ISSUER,
+ *     }),
+ *   ],
  * })
  * ```
  *
@@ -59,7 +65,7 @@ export interface CognitoProfile extends Record<string, any> {
  * :::tip
  *
  * The Cognito provider comes with a [default configuration](https://github.com/nextauthjs/next-auth/blob/main/packages/core/src/providers/cognito.ts).
- * To override the defaults for your use case, check out [customizing a built-in OAuth provider](https://authjs.dev/guides/providers/custom-provider#override-default-options).
+ * To override the defaults for your use case, check out [customizing a built-in OAuth provider](https://authjs.dev/guides/configuring-oauth-providers).
  *
  * :::
  *
@@ -81,12 +87,7 @@ export default function Cognito<P extends CognitoProfile>(
     name: "Cognito",
     type: "oidc",
     style: {
-      logo: "/cognito.svg",
-      logoDark: "/cognito.svg",
-      bg: "#fff",
-      text: "#C17B9E",
-      bgDark: "#fff",
-      textDark: "#C17B9E",
+      brandColor: "#C17B9E",
     },
     options,
   }

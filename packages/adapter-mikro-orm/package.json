@@ -1,6 +1,6 @@
 {
   "name": "@auth/mikro-orm-adapter",
-  "version": "1.0.1",
+  "version": "2.7.3",
   "description": "MikroORM adapter for Auth.js",
   "homepage": "https://authjs.dev",
   "repository": "https://github.com/nextauthjs/next-auth",
@@ -37,23 +37,18 @@
     "access": "public"
   },
   "scripts": {
-    "test": "jest --runInBand",
-    "build": "tsc"
+    "test": "vitest -c ../utils/vitest.config.ts",
+    "build": "tsc",
+    "clean": "rm -rf *.js *.d.ts* lib"
   },
   "peerDependencies": {
     "@mikro-orm/core": "^5"
   },
   "devDependencies": {
     "@mikro-orm/core": "^5",
-    "@mikro-orm/sqlite": "^5",
-    "@auth/adapter-test": "workspace:*",
-    "@auth/tsconfig": "workspace:*",
-    "jest": "^29"
+    "@mikro-orm/sqlite": "^5"
   },
   "dependencies": {
     "@auth/core": "workspace:*"
-  },
-  "jest": {
-    "preset": "@auth/adapter-test/jest"
   }
 }

@@ -1,7 +1,7 @@
 /**
- * <div style={{backgroundColor: "#ffcc00", display: "flex", justifyContent: "space-between", color: "#000", padding: 16}}>
+ * <div class="provider" style={{backgroundColor: "#ffcc00", display: "flex", justifyContent: "space-between", color: "#000", padding: 16}}>
  * <span>Built-in <b>Yandex</b> integration.</span>
- * <a href="https://github.com">
+ * <a href="https://yandex.com">
  *   <img style={{display: "block"}} src="https://authjs.dev/img/providers/yandex.svg" height="48" width="48"/>
  * </a>
  * </div>
@@ -9,7 +9,7 @@
  * @module providers/yandex
  */
 
-import { OAuthConfig, OAuthUserConfig } from "."
+import { OAuthConfig, OAuthUserConfig } from "./oauth.js"
 
 /**
  * - {@link https://yandex.com/dev/id/doc/en/user-information | Getting information about the user}
@@ -84,17 +84,25 @@ export interface YandexProfile {
 }
 
 /**
- * Add Yandex login to your page
+ * Add Yandex login to your page.
  *
- * @example
+ * ### Setup
  *
+ * #### Callback URL
+ * ```
+ * https://example.com/api/auth/callback/yandex
+ * ```
+ *
+ * #### Configuration
  * ```ts
  * import { Auth } from "@auth/core"
  * import Yandex from "@auth/core/providers/yandex"
  *
  * const request = new Request(origin)
  * const response = await Auth(request, {
- *  providers: [Yandex({ clientId: YANDEX_CLIENT_ID, clientSecret: YANDEX_CLIENT_SECRET })],
+ *   providers: [
+ *     Yandex({ clientId: YANDEX_CLIENT_ID, clientSecret: YANDEX_CLIENT_SECRET }),
+ *   ],
  * })
  * ```
  *
@@ -108,7 +116,7 @@ export interface YandexProfile {
  *
  *:::tip
  * The Yandex provider comes with a [default configuration](https://github.com/nextauthjs/next-auth/blob/main/packages/core/src/providers/yandex.ts).
- * To override the defaults for your use case, check out [customizing a built-in OAuth provider](https://authjs.dev/guides/providers/custom-provider#override-default-options).
+ * To override the defaults for your use case, check out [customizing a built-in OAuth provider](https://authjs.dev/guides/configuring-oauth-providers).
  * :::
  *
  * :::info **Disclaimer**
@@ -143,12 +151,8 @@ export default function Yandex(
       }
     },
     style: {
-      logo: "/yandex.svg",
-      logoDark: "/yandex.svg",
       bg: "#ffcc00",
       text: "#000",
-      bgDark: "#ffcc00",
-      textDark: "#000",
     },
     options,
   }

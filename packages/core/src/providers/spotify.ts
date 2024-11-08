@@ -1,5 +1,5 @@
 /**
- * <div style={{backgroundColor: "#000", display: "flex", justifyContent: "space-between", color: "#fff", padding: 16}}>
+ * <div class="provider" style={{backgroundColor: "#000", display: "flex", justifyContent: "space-between", color: "#fff", padding: 16}}>
  * <span>Built-in <b>Spotify</b> integration.</span>
  * <a href="https://www.spotify.com/">
  *   <img style={{display: "block"}} src="https://authjs.dev/img/providers/spotify.svg" height="48" />
@@ -32,13 +32,18 @@ export interface SpotifyProfile extends Record<string, any> {
  * ```
  *
  * #### Configuration
- *```js
- * import Auth from "@auth/core"
+ *```ts
+ * import { Auth } from "@auth/core"
  * import Spotify from "@auth/core/providers/spotify"
  *
  * const request = new Request(origin)
  * const response = await Auth(request, {
- *   providers: [Spotify({ clientId: SPOTIFY_CLIENT_ID, clientSecret: SPOTIFY_CLIENT_SECRET })],
+ *   providers: [
+ *     Spotify({
+ *       clientId: SPOTIFY_CLIENT_ID,
+ *       clientSecret: SPOTIFY_CLIENT_SECRET,
+ *     }),
+ *   ],
  * })
  * ```
  *
@@ -55,7 +60,7 @@ export interface SpotifyProfile extends Record<string, any> {
  * :::tip
  *
  * The Spotify provider comes with a [default configuration](https://github.com/nextauthjs/next-auth/blob/main/packages/core/src/providers/spotify.ts).
- * To override the defaults for your use case, check out [customizing a built-in OAuth provider](https://authjs.dev/guides/providers/custom-provider#override-default-options).
+ * To override the defaults for your use case, check out [customizing a built-in OAuth provider](https://authjs.dev/guides/configuring-oauth-providers).
  *
  * :::
  *
@@ -88,14 +93,7 @@ export default function Spotify<P extends SpotifyProfile>(
         image: profile.images?.[0]?.url,
       }
     },
-    style: {
-      logo: "/spotify.svg",
-      logoDark: "/spotify.svg",
-      bg: "#fff",
-      text: "#2ebd59",
-      bgDark: "#fff",
-      textDark: "#2ebd59",
-    },
+    style: { brandColor: "#1db954" },
     options,
   }
 }

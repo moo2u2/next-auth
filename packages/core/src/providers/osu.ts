@@ -1,6 +1,6 @@
 /**
- * <div style={{backgroundColor: "#000", display: "flex", justifyContent: "space-between", color: "#fff", padding: 16}}>
- * <span>Built-in <b>Osu!</b> integration.</span>
+ * <div class="provider" style={{backgroundColor: "#000", display: "flex", justifyContent: "space-between", color: "#fff", padding: 16}}>
+ * <span>Built-in <b>osu!</b> integration.</span>
  * <a href="https://osu.ppy.sh/home">
  *   <img style={{display: "block"}} src="https://authjs.dev/img/providers/osu.svg" height="48" />
  * </a>
@@ -14,7 +14,7 @@ export interface OsuUserCompact {
   avatar_url: string
   country_code: string
   default_group: string
-  id: string
+  id: number
   is_active: boolean
   is_bot: boolean
   is_deleted: boolean
@@ -60,7 +60,7 @@ export interface OsuProfile extends OsuUserCompact, Record<string, any> {
 }
 
 /**
- * Add Osu login to your page.
+ * Add osu! login to your page.
  *
  * ### Setup
  *
@@ -70,20 +70,22 @@ export interface OsuProfile extends OsuUserCompact, Record<string, any> {
  * ```
  *
  * #### Configuration
- *```js
- * import Auth from "@auth/core"
- * import Osu! from "@auth/core/providers/osu"
+ *```ts
+ * import { Auth } from "@auth/core"
+ * import Osu from "@auth/core/providers/osu"
  *
  * const request = new Request(origin)
  * const response = await Auth(request, {
- *   providers: [Osu({ clientId: OSU_CLIENT_ID, clientSecret: OSU_CLIENT_SECRET })],
+ *   providers: [
+ *     Osu({ clientId: OSU_CLIENT_ID, clientSecret: OSU_CLIENT_SECRET }),
+ *   ],
  * })
  * ```
  *
  * ### Resources
  *
- *  - [Osu OAuth documentation](https://osu.ppy.sh/docs/index.html#authentication)
- *  - [Osu app console](https://osu.ppy.sh/home/account/edit#new-oauth-application)
+ *  - [osu! OAuth documentation](https://osu.ppy.sh/docs/index.html#authentication)
+ *  - [osu! app console](https://osu.ppy.sh/home/account/edit#new-oauth-application)
  *
  * ### Notes
  *
@@ -92,14 +94,14 @@ export interface OsuProfile extends OsuUserCompact, Record<string, any> {
  *
  * :::note
  *
- * Osu! does not provide a user email.
+ * osu! does not provide a user email.
  *
  * :::
  *
  * :::tip
  *
- * The Osu provider comes with a [default configuration](https://github.com/nextauthjs/next-auth/blob/main/packages/core/src/providers/osu.ts).
- * To override the defaults for your use case, check out [customizing a built-in OAuth provider](https://authjs.dev/guides/providers/custom-provider#override-default-options).
+ * The osu! provider comes with a [default configuration](https://github.com/nextauthjs/next-auth/blob/main/packages/core/src/providers/osu.ts).
+ * To override the defaults for your use case, check out [customizing a built-in OAuth provider](https://authjs.dev/guides/configuring-oauth-providers).
  *
  * :::
  *
@@ -118,14 +120,14 @@ export default function Osu<P extends OsuProfile>(
 ): OAuthConfig<P> {
   return {
     id: "osu",
-    name: "Osu!",
+    name: "osu!",
     type: "oauth",
     token: "https://osu.ppy.sh/oauth/token",
     authorization: "https://osu.ppy.sh/oauth/authorize?scope=identify",
     userinfo: "https://osu.ppy.sh/api/v2/me",
     profile(profile) {
       return {
-        id: profile.id,
+        id: profile.id.toString(),
         email: null,
         name: profile.username,
         image: profile.avatar_url,

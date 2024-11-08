@@ -1,5 +1,5 @@
 /**
- * <div style={{backgroundColor: "#000", display: "flex", justifyContent: "space-between", color: "#fff", padding: 16}}>
+ * <div class="provider" style={{backgroundColor: "#000", display: "flex", justifyContent: "space-between", color: "#fff", padding: 16}}>
  * <span>Built-in <b>Google</b> integration.</span>
  * <a href="https://google.com">
  *   <img style={{display: "block"}} src="https://authjs.dev/img/providers/google.svg" height="48" width="48"/>
@@ -16,14 +16,15 @@ export interface GoogleProfile extends Record<string, any> {
   email: string
   email_verified: boolean
   exp: number
-  family_name: string
+  family_name?: string
   given_name: string
-  hd: string
+  hd?: string
   iat: number
   iss: string
-  jti: string
+  jti?: string
+  locale?: string
   name: string
-  nbf: number
+  nbf?: number
   picture: string
   sub: string
 }
@@ -39,13 +40,15 @@ export interface GoogleProfile extends Record<string, any> {
  * ```
  *
  * #### Configuration
- *```js
- * import Auth from "@auth/core"
+ *```ts
+ * import { Auth } from "@auth/core"
  * import Google from "@auth/core/providers/google"
  *
  * const request = new Request(origin)
  * const response = await Auth(request, {
- *   providers: [Google({ clientId: GOOGLE_CLIENT_ID, clientSecret: GOOGLE_CLIENT_SECRET })],
+ *   providers: [
+ *     Google({ clientId: GOOGLE_CLIENT_ID, clientSecret: GOOGLE_CLIENT_SECRET }),
+ *   ],
  * })
  * ```
  *
@@ -75,10 +78,10 @@ export interface GoogleProfile extends Record<string, any> {
  *
  * If you need access to the RefreshToken or AccessToken for a Google account and you are not using a database to persist user accounts, this may be something you need to do.
  *
- * ```js title="pages/api/auth/[...nextauth].js"
+ * ```ts
  * const options = {
  *   providers: [
- *     GoogleProvider({
+ *     Google({
  *       clientId: process.env.GOOGLE_ID,
  *       clientSecret: process.env.GOOGLE_SECRET,
  *       authorization: {
@@ -100,7 +103,7 @@ export interface GoogleProfile extends Record<string, any> {
  *
  * You can use this property to restrict access to people with verified accounts at a particular domain.
  *
- * ```js
+ * ```ts
  * const options = {
  *   ...
  *   callbacks: {
@@ -119,7 +122,7 @@ export interface GoogleProfile extends Record<string, any> {
  * :::tip
  *
  * The Google provider comes with a [default configuration](https://github.com/nextauthjs/next-auth/blob/main/packages/core/src/providers/google.ts).
- * To override the defaults for your use case, check out [customizing a built-in OAuth provider](https://authjs.dev/guides/providers/custom-provider#override-default-options).
+ * To override the defaults for your use case, check out [customizing a built-in OAuth provider](https://authjs.dev/guides/configuring-oauth-providers).
  *
  * :::
  *
@@ -142,12 +145,7 @@ export default function Google<P extends GoogleProfile>(
     type: "oidc",
     issuer: "https://accounts.google.com",
     style: {
-      logo: "/google.svg",
-      logoDark: "/google.svg",
-      bgDark: "#fff",
-      bg: "#fff",
-      text: "#000",
-      textDark: "#000",
+      brandColor: "#1a73e8",
     },
     options,
   }

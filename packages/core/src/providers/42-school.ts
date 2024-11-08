@@ -1,5 +1,5 @@
 /**
- * <div style={{backgroundColor: "#fff", display: "flex", justifyContent: "space-between", color: "#000", padding: 16}}>
+ * <div class="provider" style={{backgroundColor: "#fff", display: "flex", justifyContent: "space-between", color: "#000", padding: 16}}>
  * <span>Built-in <b>42School</b> integration.</span>
  * <a href="https://api.intra.42.fr//">
  *   <img style={{display: "block"}} src="https://authjs.dev/img/providers/42-school.svg" height="48" width="48"/>
@@ -144,6 +144,17 @@ export interface CampusUser {
   created_at: string
   updated_at: string | null
 }
+
+export interface Image {
+  link: string
+  versions: {
+    micro: string
+    small: string
+    medium: string
+    large: string
+  }
+}
+
 export interface FortyTwoProfile extends UserData, Record<string, any> {
   groups: Array<{ id: string; name: string }>
   cursus_users: CursusUser[]
@@ -159,6 +170,7 @@ export interface FortyTwoProfile extends UserData, Record<string, any> {
   roles: Array<{ id: string; name: string }>
   campus: Campus[]
   campus_users: CampusUser[]
+  image: Image
   user: any | null
 }
 
@@ -173,13 +185,18 @@ export interface FortyTwoProfile extends UserData, Record<string, any> {
  * ```
  *
  * #### Configuration
- *```js
- * import Auth from "@auth/core"
- * import 42School from "@auth/core/providers/42-school"
+ *```ts
+ * import { Auth } from "@auth/core"
+ * import FortyTwoSchool from "@auth/core/providers/42-school"
  *
  * const request = new Request(origin)
  * const response = await Auth(request, {
- *   providers: [42School({ clientId: 42_SCHOOL_CLIENT_ID, clientSecret: 42_SCHOOL_CLIENT_SECRET })],
+ *   providers: [
+ *     FortyTwoSchool({
+ *       clientId: FORTY_TWO_SCHOOL_CLIENT_ID,
+ *       clientSecret: FORTY_TWO_SCHOOL_CLIENT_SECRET,
+ *     }),
+ *   ],
  * })
  * ```
  *
@@ -191,7 +208,7 @@ export interface FortyTwoProfile extends UserData, Record<string, any> {
  *
  *
  * :::note
- * 42 returns a field on `Account` called `created_at` which is a number. See the [docs](https://api.intra.42.fr/apidoc/guides/getting_started#make-basic-requests). Make sure to add this field to your database schema, in case if you are using an [Adapter](https://authjs.dev/reference/adapters).
+ * 42 returns a field on `Account` called `created_at` which is a number. See the [docs](https://api.intra.42.fr/apidoc/guides/getting_started#make-basic-requests). Make sure to add this field to your database schema, in case if you are using an [Adapter](https://authjs.dev/reference/core/adapters).
  * :::
  * By default, Auth.js assumes that the 42School provider is
  * based on the [OAuth 2](https://www.rfc-editor.org/rfc/rfc6749.html) specification.
@@ -199,7 +216,7 @@ export interface FortyTwoProfile extends UserData, Record<string, any> {
  * :::tip
  *
  * The 42School provider comes with a [default configuration](https://github.com/nextauthjs/next-auth/blob/main/packages/core/src/providers/42-school.ts).
- * To override the defaults for your use case, check out [customizing a built-in OAuth provider](https://authjs.dev/guides/providers/custom-provider#override-default-options).
+ * To override the defaults for your use case, check out [customizing a built-in OAuth provider](https://authjs.dev/guides/configuring-oauth-providers).
  *
  * :::
  *
@@ -231,7 +248,7 @@ export default function FortyTwo<P extends FortyTwoProfile>(
         id: profile.id.toString(),
         name: profile.usual_full_name,
         email: profile.email,
-        image: profile.image_url,
+        image: profile.image.link,
       }
     },
     options,
