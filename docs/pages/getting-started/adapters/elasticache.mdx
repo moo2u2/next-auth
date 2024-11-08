@@ -1,0 +1,92 @@
+import { Code } from "@/components/Code"
+
+<img
+  align="right"
+  src="/img/adapters/elasticache.svg"
+  width="64"
+  height="64"
+/>
+
+# Elasticache Adapter
+
+## Resources
+
+- [Elasticache documentation](https://docs.aws.amazon.com/elasticache/)
+
+## Setup
+
+### Installation
+
+```bash npm2yarn
+npm install redis @auth/elasticache-redis-adapter
+```
+
+### Environment Variables
+
+```sh
+ELASTICACHE_URI
+```
+
+### Configuration
+
+<Code>
+<Code.Next>
+
+```ts filename="./auth.ts"
+import NextAuth from "next-auth"
+import { ElasticacheAdapter } from "@auth/elasticache-adapter"
+import { createClient } from "redis"
+
+const redis = createClient({
+  url: process.env.ELASTICACHE_URI,
+  socket: { tls: true }
+})
+redis.connect();
+
+export const { handlers, auth, signIn, signOut } = NextAuth({
+  adapter: ElasticacheAdapter(redis),
+  providers: [],
+})
+```
+
+</Code.Next>
+</Code>
+
+### Advanced usage
+
+#### Customising cache key TTL
+
+```ts
+ElasticacheAdapter(redis, {
+  sessionKeyTTLSeconds: 30 * 60 // 30 mins
+})
+```
+
+#### Using multiple apps with a single Elasticache instance
+
+If you have multiple Auth.js connected apps using the same instance, you need different key prefixes for every app.
+
+You can change the prefixes by passing an `options` object as the second argument to the adapter factory function.
+
+The default values for this object are:
+
+```ts
+const defaultOptions = {
+  baseKeyPrefix: "",
+  accountKeyPrefix: "user:account:",
+  accountByUserIdPrefix: "user:account:by-user-id:",
+  emailKeyPrefix: "user:email:",
+  sessionKeyPrefix: "user:session:",
+  sessionByUserIdKeyPrefix: "user:session:by-user-id:",
+  userKeyPrefix: "user:",
+  verificationTokenKeyPrefix: "user:token:",
+}
+```
+
+Usually changing the `baseKeyPrefix` should be enough for this scenario, but for more custom setups, you can also change the prefixes of every single key.
+
+```ts
+export const { handlers, auth, signIn, signOut } = NextAuth({
+  adapter: ElasticacheAdapter(redis, { baseKeyPrefix: "app2:" }),
+})
+```
